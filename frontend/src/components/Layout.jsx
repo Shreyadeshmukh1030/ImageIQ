@@ -1,11 +1,9 @@
 import React from 'react';
-import Sidebar from './Sidebar';
 import TopNav from './TopNav';
 
 const Layout = ({ children, onUploadClick }) => {
   return (
-    <div className="app-layout">
-      <Sidebar />
+    <div className="app-layout no-sidebar">
       <div className="main-content">
         <TopNav onUploadClick={onUploadClick} />
         {children}

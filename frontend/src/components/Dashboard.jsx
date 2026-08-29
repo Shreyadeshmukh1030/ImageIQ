@@ -4,8 +4,8 @@ import QualityGaugeCard from './cards/QualityGaugeCard';
 import DetectedIssuesCard from './cards/DetectedIssuesCard';
 import TechnicalStatsCard from './cards/TechnicalStatsCard';
 import ExplainabilityCard from './cards/ExplainabilityCard';
-import AnalysisHistoryCard from './cards/AnalysisHistoryCard';
 import UploadZoneCard from './cards/UploadZoneCard';
+import SampleImagesCard from './cards/SampleImagesCard';
 
 const Dashboard = ({ result, isAnalyzing, onFileSelected, previewUrl, history }) => {
   return (
@@ -19,12 +19,12 @@ const Dashboard = ({ result, isAnalyzing, onFileSelected, previewUrl, history })
       />
       
       <DetectedIssuesCard 
-        issues={result?.defects} 
+        issues={result?.issues} 
       />
 
       {/* Middle Row */}
       <TechnicalStatsCard 
-        stats={result?.features} 
+        stats={result?.statistics} 
       />
 
       {/* Bottom Row */}
@@ -33,9 +33,11 @@ const Dashboard = ({ result, isAnalyzing, onFileSelected, previewUrl, history })
       />
       
       <div style={{ display: 'flex', flexDirection: 'column', gridColumn: '3 / 4', gridRow: '3 / 4' }}>
-        <AnalysisHistoryCard history={history} />
         <UploadZoneCard onFileSelected={onFileSelected} />
       </div>
+
+      {/* Samples Row */}
+      <SampleImagesCard onFileSelected={onFileSelected} />
       
       {/* Loading Overlay */}
       {isAnalyzing && (

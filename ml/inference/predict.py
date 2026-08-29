@@ -47,7 +47,7 @@ class ImagePredictor:
             return {
                 'quality_score': 0.0,
                 'quality_label': 'DEFECTIVE',
-                'issues': [{'type': 'CORRUPTED_IMAGE', 'severity': 'high', 'confidence': 1.0}],
+                'issues': [{'type': 'Image corruption or severe degradation', 'severity': 'high', 'confidence': 1.0}],
                 'statistics': cv_stats
             }
             
@@ -58,7 +58,7 @@ class ImagePredictor:
              return {
                 'quality_score': 0.0,
                 'quality_label': 'DEFECTIVE',
-                'issues': [{'type': 'CORRUPTED_IMAGE', 'severity': 'high', 'confidence': 1.0}],
+                'issues': [{'type': 'Image corruption or severe degradation', 'severity': 'high', 'confidence': 1.0}],
                 'statistics': cv_stats
             }
             
@@ -90,30 +90,30 @@ class ImagePredictor:
             })
             
         # Map NN defects
-        if defect_probs[0] > 0.5: add_issue('ARTIFACTS', defect_probs[0], 'high')
-        if defect_probs[1] > 0.5: add_issue('BLUR', defect_probs[1], 'medium')
-        if defect_probs[2] > 0.5: add_issue('CONTRAST', defect_probs[2], 'medium')
-        if defect_probs[3] > 0.5: add_issue('COLOR', defect_probs[3], 'low')
-        if defect_probs[4] > 0.5: add_issue('OTHER', defect_probs[4], 'low')
+        if defect_probs[0] > 0.5: add_issue('Potential visual defect', defect_probs[0], 'high')
+        if defect_probs[1] > 0.5: add_issue('Blur / insufficient sharpness', defect_probs[1], 'medium')
+        if defect_probs[2] > 0.5: add_issue('Potential visual defect', defect_probs[2], 'medium')
+        if defect_probs[3] > 0.5: add_issue('Potential visual defect', defect_probs[3], 'low')
+        if defect_probs[4] > 0.5: add_issue('Potential visual defect', defect_probs[4], 'low')
         
         # Synthetic NN targets (indices 5-8)
-        if defect_probs[5] > 0.5 and not any(i['type'] == 'BLUR' for i in issues): 
-            add_issue('BLUR', defect_probs[5], 'high')
-        if defect_probs[6] > 0.5: add_issue('UNDEREXPOSURE', defect_probs[6], 'high')
-        if defect_probs[7] > 0.5: add_issue('OVEREXPOSURE', defect_probs[7], 'high')
-        if defect_probs[8] > 0.5: add_issue('NOISE', defect_probs[8], 'high')
+        if defect_probs[5] > 0.5 and not any(i['type'] == 'Blur / insufficient sharpness' for i in issues): 
+            add_issue('Blur / insufficient sharpness', defect_probs[5], 'high')
+        if defect_probs[6] > 0.5: add_issue('Underexposure', defect_probs[6], 'high')
+        if defect_probs[7] > 0.5: add_issue('Overexposure', defect_probs[7], 'high')
+        if defect_probs[8] > 0.5: add_issue('Image noise', defect_probs[8], 'high')
             
         # 3. Decision Engine: Incorporate CV stats as sanity checks or fallback
-        if cv_stats['brightness'] < 40 and not any(i['type'] == 'UNDEREXPOSURE' for i in issues):
-            add_issue('UNDEREXPOSURE', 0.8, 'high')
-        elif cv_stats['brightness'] > 220 and not any(i['type'] == 'OVEREXPOSURE' for i in issues):
-            add_issue('OVEREXPOSURE', 0.8, 'high')
+        if cv_stats['brightness'] < 40 and not any(i['type'] == 'Underexposure' for i in issues):
+            add_issue('Underexposure', 0.8, 'high')
+        elif cv_stats['brightness'] > 220 and not any(i['type'] == 'Overexposure' for i in issues):
+            add_issue('Overexposure', 0.8, 'high')
             
-        if cv_stats['sharpness'] < 50 and not any(i['type'] == 'BLUR' for i in issues):
-            add_issue('BLUR', 0.7, 'high')
+        if cv_stats['sharpness'] < 50 and not any(i['type'] == 'Blur / insufficient sharpness' for i in issues):
+            add_issue('Blur / insufficient sharpness', 0.7, 'high')
             
-        if cv_stats['noise'] > 12 and not any(i['type'] == 'NOISE' for i in issues):
-            add_issue('NOISE', 0.7, 'medium')
+        if cv_stats['noise'] > 12 and not any(i['type'] == 'Image noise' for i in issues):
+            add_issue('Image noise', 0.7, 'medium')
             
         # Clean up stats for response
         clean_stats = {k: round(v, 2) if isinstance(v, float) else v for k, v in cv_stats.items() if k != 'corrupted'}
