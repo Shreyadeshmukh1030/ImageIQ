@@ -5,9 +5,9 @@ import shutil
 import uuid
 import json
 
-from app.schemas.schemas import AnalysisResultResponse
-from app.models.database import get_db, DBAnalysisResult
-from app.services.inference_service import analyze_image_file
+from backend.app.schemas.schemas import AnalysisResultResponse
+from backend.app.models.database import get_db, DBAnalysisResult
+from backend.app.services.inference_service import analyze_image_file
 
 router = APIRouter()
 UPLOAD_DIR = "/tmp/imageiq_uploads" if os.name != 'nt' else os.path.join(os.environ.get('TEMP', 'C:\\temp'), 'imageiq_uploads')
