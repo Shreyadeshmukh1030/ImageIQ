@@ -1,14 +1,13 @@
---extra-index-url https://download.pytorch.org/whl/cpu
-fastapi>=0.103.1
-uvicorn>=0.23.2
-python-multipart>=0.0.6
-sqlalchemy>=2.0.20
-pydantic>=2.3.0
-torch>=2.0.0
-torchvision>=0.15.0
-pandas>=2.0.3
-numpy>=1.26.4
-opencv-python-headless>=4.8.0
-scikit-learn>=1.3.0
-scipy>=1.11.1
-Pillow>=10.0.0
+fastapi
+uvicorn
+python-multipart
+sqlalchemy
+pydantic
+torch
+torchvision
+pandas
+numpy
+opencv-python-headless
+scikit-learn
+scipy
+Pillow
