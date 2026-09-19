@@ -15,4 +15,5 @@ archive.zip
 *.sqlite3
 frontend/dist/
 .DS_Store
+.pytest_cache/
 koniq++database_distributions.csv
